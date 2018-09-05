@@ -11,6 +11,9 @@ public class App
 	{
 
 		CartService cartService = new CartService();
+		cartService.fetchCartItems("CartItems.json");
+		cartService.fetchCategories("Categories.json");
+		cartService.fetchFlatDiscountSlabs("FlatDiscSlabs.json");
 		cartService.displayItemizedBill();
 	}
 }

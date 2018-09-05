@@ -29,7 +29,7 @@ public class FlatDiscountSlabsInitializer implements Initializer{
 		JSONArray slabArray;
 		try {
 			slabArray = (JSONArray) parser.parse(
-					new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/"+fileName))));
+					new BufferedReader(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName))));
 			if(slabArray != null && slabArray.size() != 0){
 				this.slabs = new ArrayList<FlatDiscountSlab>();
 				for (Object slabObj : slabArray) {

@@ -2,13 +2,11 @@ package com.org.shoppingCart.utils;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import com.org.shoppingCart.model.Category;
 import com.org.shoppingCart.model.FlatDiscountSlab;
 
-public class DiscountUtils {
+public class ShoppingCartUtils {
 
 	public static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
 
@@ -28,8 +26,21 @@ public class DiscountUtils {
 			int total = grandTotal.intValue();
 			if(total >= flatDiscountSlab.getMinRange() && total <= flatDiscountSlab.getMaxRange()){
 				return flatDiscountSlab;
+			}else if (total > flatDiscountSlab.getMaxRange()){
+				return flatDiscountSlab;
 			}
 		}
 		return null;
+	}
+
+	public static BigDecimal getTotalPricePerItem(int unitPrice, int discount, int quantity) {
+		BigDecimal discountOnItem = ShoppingCartUtils.calculateDiscount(new BigDecimal(unitPrice) , new BigDecimal(discount));
+		BigDecimal discountedItemPrice = new BigDecimal(unitPrice).subtract(discountOnItem);
+		return discountedItemPrice.multiply(new BigDecimal(quantity));
+	}
+
+	public static BigDecimal calculateNetBillAmount(BigDecimal grandTotal, int slabDiscount) {
+		BigDecimal discountOnNetAmt =ShoppingCartUtils.calculateDiscount(grandTotal, new BigDecimal(slabDiscount)); 
+		return grandTotal.subtract(discountOnNetAmt);
 	}
 }
