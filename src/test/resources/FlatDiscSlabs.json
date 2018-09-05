@@ -1,0 +1,17 @@
+[
+   {
+      "minRange":0,
+      "maxRange":3000,
+      "discPer":2
+   },
+	{
+      "minRange":3000,
+      "maxRange":7000,
+      "discPer":4
+   },
+   {
+      "minRange":7000,
+      "maxRange":10000,
+      "discPer":5
+   }
+ ]

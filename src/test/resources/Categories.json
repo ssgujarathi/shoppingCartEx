@@ -1,0 +1,27 @@
+[
+   {
+      "categoryId":"001",
+      "categoryName":"ConsumerGoods",
+      "discPer":5
+   },
+   {
+      "categoryId":"002",
+      "categoryName":"OrganicFood",
+      "discPer":7
+   },
+   {
+      "categoryId":"003",
+      "categoryName":"Grocery",
+      "discPer":2
+   },   
+   {
+      "categoryId":"004",
+      "categoryName":"BabyProducts",
+      "discPer":10
+   },
+   {
+      "categoryId":"005",
+      "categoryName":"Apperrel",
+      "discPer":15
+   }
+]
