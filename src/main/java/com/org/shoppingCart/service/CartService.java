@@ -59,7 +59,8 @@ public class CartService {
 			for (Item item : items) {
 
 				Category catgory = ShoppingCartUtils.getCategoryById(categories, item.getItemCategory());
-				BigDecimal itemTotal = ShoppingCartUtils.getTotalPricePerItem(item.getUnitPrice(),catgory.getDiscPer(),item.getQuantity());
+				int discount = (catgory != null) ?	catgory.getDiscPer(): 0;
+				BigDecimal itemTotal = ShoppingCartUtils.getTotalPricePerItem(item.getUnitPrice(),discount,item.getQuantity());
 				System.out.printf("%22s %7s %7s %10s %17s",item.getItemName(),
 						item.getQuantity(),
 						item.getUnitPrice(),

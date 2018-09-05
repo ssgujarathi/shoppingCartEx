@@ -17,9 +17,10 @@ public class ShoppingCartUtils {
 	public static Category getCategoryById(List<Category> categories, String categoryId){
 		Optional<Category> optionalCategory = categories.stream()
 				.filter(c -> c.getCategoryId().equals(categoryId)).findFirst();
-
-		Category catgory = optionalCategory.get();
-		return catgory;
+		if(optionalCategory.isPresent()){
+			return optionalCategory.get();
+		}
+		return null;
 	}
 	public static FlatDiscountSlab getFlatDiscByAmount(List<FlatDiscountSlab> slabs, BigDecimal grandTotal){
 		for (FlatDiscountSlab flatDiscountSlab : slabs) {
@@ -34,7 +35,9 @@ public class ShoppingCartUtils {
 	}
 
 	public static BigDecimal getTotalPricePerItem(int unitPrice, int discount, int quantity) {
-		BigDecimal discountOnItem = ShoppingCartUtils.calculateDiscount(new BigDecimal(unitPrice) , new BigDecimal(discount));
+		
+		BigDecimal discountOnItem = (discount != 0) ? 
+				ShoppingCartUtils.calculateDiscount(new BigDecimal(unitPrice) , new BigDecimal(discount)) : new BigDecimal(0);
 		BigDecimal discountedItemPrice = new BigDecimal(unitPrice).subtract(discountOnItem);
 		return discountedItemPrice.multiply(new BigDecimal(quantity));
 	}
