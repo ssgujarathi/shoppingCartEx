@@ -7,22 +7,20 @@ import static org.junit.Assert.assertNull;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.org.shoppingCart.model.Category;
-import com.org.shoppingCart.model.FlatDiscountSlab;
-import com.org.shoppingCart.model.Item;
 import com.org.shoppingCart.service.CartService;
 import com.org.shoppingCart.utils.ShoppingCartUtils;
 public class ShoppingCartTest {
 
-	List<Item> items;
-	List<Category> categories; 
-	List<FlatDiscountSlab> slabs;
+	public static List<Item> items;
+	static List<Category> categories; 
+	public static List<FlatDiscountSlab> slabs;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() throws Exception {
 		CartService cartService = new CartService();
 		items = cartService.fetchCartItems("CartItems.json");
 		categories = cartService.fetchCategories("Categories.json");
@@ -79,5 +77,12 @@ public class ShoppingCartTest {
 		int slabDiscount = ShoppingCartUtils.getFlatDiscByAmount(slabs, grandTotal).getDiscPer();
 		BigDecimal total = ShoppingCartUtils.calculateNetBillAmount(grandTotal, slabDiscount);
 		assertEquals("wrong Net Bill Amount calculated", 5515.2F, total.floatValue(), 0.001);
+	}
+	
+	@AfterClass
+	public static void tearDown(){
+		items.clear();
+		slabs.clear();
+		categories.clear();
 	}
 }
