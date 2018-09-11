@@ -4,10 +4,12 @@
  */
 package com.org.shoppingCart.service;
 
+import com.org.shoppingCart.exception.BusinessValidationException;
+
 /**
  * @author Sneha Gujarathi
  *
  */
 public interface Initializer {
-	public void initialize (String fileName);
+	public void initialize (String fileName) throws BusinessValidationException;
 }

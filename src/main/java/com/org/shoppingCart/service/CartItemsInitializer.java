@@ -11,6 +11,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.org.shoppingCart.exception.BusinessValidationException;
+import com.org.shoppingCart.exception.ExceptionMessageResource;
 import com.org.shoppingCart.model.Item;
 
 public class CartItemsInitializer implements Initializer{
@@ -24,7 +26,7 @@ public class CartItemsInitializer implements Initializer{
 		this.items = items;
 	}
 
-	public void initialize (String fileName){
+	public void initialize (String fileName) throws BusinessValidationException{
 		JSONParser parser = new JSONParser();
 		JSONArray cartItemArray;
 		try {
@@ -34,6 +36,15 @@ public class CartItemsInitializer implements Initializer{
 				this.items = new ArrayList<Item>();
 				for (Object itemObj : cartItemArray) {
 					JSONObject jsonObject = (JSONObject) itemObj;
+
+					if(jsonObject.get("itemId") == null || 
+							jsonObject.get("itemName") == null || 
+							jsonObject.get("itemCategory") == null ||
+							jsonObject.get("unitPrice") == null ||
+							jsonObject.get("quantity") == null ){
+						throw new BusinessValidationException(ExceptionMessageResource.CARTITEMS_FIELD_PARSE_EXCEPTION);
+					}
+					
 					this.items.add(new Item(
 							((String)jsonObject.get("itemId")), 
 							((String)jsonObject.get("itemName")), 
@@ -44,7 +55,8 @@ public class CartItemsInitializer implements Initializer{
 			}
 		} catch (IOException | ParseException e) {
 			System.err.println("Went wrong while initializing cartItems.." );
-			e.printStackTrace();		
+			e.printStackTrace();
+			throw new BusinessValidationException(ExceptionMessageResource.CARTITEMS_FIELD_PARSE_EXCEPTION);
 		}
 	}
 }

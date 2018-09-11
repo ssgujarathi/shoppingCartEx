@@ -15,10 +15,10 @@ public class ShoppingCartUtils {
 	}
 
 	public static Category getCategoryById(List<Category> categories, String categoryId){
-		Optional<Category> optionalCategory = categories.stream()
+		Optional<Category> category = categories.stream()
 				.filter(c -> c.getCategoryId().equals(categoryId)).findFirst();
-		if(optionalCategory.isPresent()){
-			return optionalCategory.get();
+		if(category.isPresent()){
+			return category.get();
 		}
 		return null;
 	}

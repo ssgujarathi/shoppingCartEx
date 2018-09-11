@@ -11,6 +11,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.org.shoppingCart.exception.BusinessValidationException;
+import com.org.shoppingCart.exception.ExceptionMessageResource;
 import com.org.shoppingCart.model.Category;
 
 public class CategoriesInitializer implements Initializer{
@@ -25,24 +27,35 @@ public class CategoriesInitializer implements Initializer{
 		this.categories = categories;
 	}
 
-	public void initialize (String fileName){
+	public void initialize (String fileName) throws BusinessValidationException{
 		JSONParser parser = new JSONParser();
-		JSONArray categoryArray;
 		
 		try {
-			categoryArray = (JSONArray) parser.parse(
+			JSONArray categoryArray = (JSONArray) parser.parse(
 					new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/"+fileName))));
 			if(categoryArray != null && categoryArray.size() != 0){
+		
 				this.categories = new ArrayList<Category>();
 				for (Object categoryObj : categoryArray) {
 					JSONObject jsonObject = (JSONObject)categoryObj;
-					this.categories.add(new Category(((String)jsonObject.get("categoryId")), 
-							((String)jsonObject.get("categoryName")), ((Long) jsonObject.get("discPer")).intValue()));
+					
+					if(jsonObject.get("categoryId") == null || 
+							jsonObject.get("categoryName") == null || 
+							jsonObject.get("discPer") == null){
+						throw new BusinessValidationException(ExceptionMessageResource.CATEGORY_FIELD_PARSE_EXCEPTION);
+					} 
+						
+					String catgoryId = ((String)jsonObject.get("categoryId"));
+					String categoryName = ((String)jsonObject.get("categoryName"));
+					int discPer = ((Long) jsonObject.get("discPer")).intValue();
+					
+					this.categories.add(new Category(catgoryId, categoryName, discPer));
 				}
 			}
 		} catch (IOException | ParseException e) {
 			System.err.println("Went wrong while initializing categories.." );
 			e.printStackTrace();		
+			throw new BusinessValidationException(ExceptionMessageResource.CATEGORY_FIELD_PARSE_EXCEPTION);
 		}
 	}
 }

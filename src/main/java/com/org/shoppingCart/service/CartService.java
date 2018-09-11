@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.org.shoppingCart.exception.BusinessValidationException;
 import com.org.shoppingCart.model.Category;
 import com.org.shoppingCart.model.FlatDiscountSlab;
 import com.org.shoppingCart.model.Item;
@@ -17,21 +18,21 @@ public class CartService {
 	private List<FlatDiscountSlab> slabs;
 	private List<Item> items;
 	
-	public List<Category> fetchCategories(String fileName){
+	public List<Category> fetchCategories(String fileName) throws BusinessValidationException{
 		Initializer initializer = new CategoriesInitializer();
 		initializer.initialize(fileName);
 		this.categories = ((CategoriesInitializer) initializer).getCategories();
 		return this.categories;
 	}
 	
-	public List<FlatDiscountSlab> fetchFlatDiscountSlabs(String fileName){
+	public List<FlatDiscountSlab> fetchFlatDiscountSlabs(String fileName) throws BusinessValidationException{
 		Initializer initializer = new FlatDiscountSlabsInitializer();
 		initializer.initialize(fileName);
 		this.slabs = ((FlatDiscountSlabsInitializer) initializer).getSlabs();
 		return this.slabs;
 	}
 
-	public List<Item> fetchCartItems(String fileName){
+	public List<Item> fetchCartItems(String fileName) throws BusinessValidationException{
 		Initializer initializer = new CartItemsInitializer();
 		initializer.initialize(fileName);
 		this.items = ((CartItemsInitializer) initializer).getItems();
@@ -44,7 +45,7 @@ public class CartService {
 		
 		if(items != null && items.size() != 0 ){
 
-			System.out.println("**************************DMart Store********************************");
+			System.out.println("**************************DMart Online Store********************************");
 			System.out.println("Date :" + dateFormat.format(date));
 			System.out.println("*********************************************************************");
 			System.out.printf("%22s %7s %7s %10s %17s","Item Name",
